@@ -1,0 +1,10 @@
+function MyFunction(r, r)
+{
+    //console.log("the End");
+    return r*r;
+    //console.log("the End");
+}
+
+console.log( MyFunction(4,4));
+let save = MyFunction(5,5);
+console.log(save);
