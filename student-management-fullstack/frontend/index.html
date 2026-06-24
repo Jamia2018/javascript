@@ -3,55 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Management</title>
+  <meta name="description" content="Kohinoor Emergency Neuro & Cardio Hospital in Purnea provides 24/7 emergency, cardiology, neurology, ICU, OT, burn care, diagnostics, and ambulance services." />
+  <title>Kohinoor Emergency Neuro & Cardio Hospital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="page">
-    <section class="hero">
-      <p class="eyebrow">Java Full Stack Beginner Project</p>
-      <h1>Student Management System</h1>
-      <p>Practice CRUD operations with Spring Boot, MySQL, REST APIs, and JavaScript.</p>
-    </section>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="Kohinoor Hospital home">
+        <span class="brand-mark">K</span>
+        <span><strong>Kohinoor</strong><small>Emergency Neuro & Cardio Hospital</small></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#services">Services</a>
+        <a href="#doctors">Doctors</a>
+        <a href="#appointments">Appointment</a>
+        <a href="#contact">Contact</a>
+        <a class="emergency-pill" href="tel:+919334066155">24/7 Emergency</a>
+      </div>
+    </nav>
+  </header>
 
-    <section class="card">
-      <h2 id="form-title">Add Student</h2>
-      <form id="student-form">
-        <input type="hidden" id="student-id" />
-        <label>Name <input id="name" type="text" placeholder="Asha Kumar" required /></label>
-        <label>Email <input id="email" type="email" placeholder="asha@example.com" required /></label>
-        <label>Course <input id="course" type="text" placeholder="Java Full Stack" required /></label>
-        <label>Age <input id="age" type="number" min="16" max="60" placeholder="22" required /></label>
-        <div class="actions">
-          <button type="submit">Save Student</button>
-          <button type="button" id="reset-button" class="secondary">Clear</button>
+  <main id="main-content">
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <p class="eyebrow">24/7 Emergency Services • Line Bazar, Purnea</p>
+        <h1>Kohinoor Emergency Neuro & Cardio Hospital</h1>
+        <p class="hero-copy">Rapid emergency response, specialist consultations, ICU support, operation theatre, diagnostics, and compassionate inpatient care for Purnea and nearby communities.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="tel:+919334066155">Call Emergency</a>
+          <a class="button secondary" href="#appointments">Book Appointment</a>
         </div>
-      </form>
-      <p id="message" role="status"></p>
+        <dl class="quick-stats" aria-label="Hospital highlights">
+          <div><dt>24/7</dt><dd>Emergency</dd></div>
+          <div><dt>ICU</dt><dd>Critical Care</dd></div>
+          <div><dt>Director</dt><dd>Mr Salman Khurshid</dd></div>
+        </dl>
+      </div>
+      <aside class="hero-card" aria-label="Emergency contact card">
+        <span class="pulse-dot"></span>
+        <h2>Emergency Help Desk</h2>
+        <p>Call any office number for urgent admissions, ambulance support, OPD availability, and diagnostics.</p>
+        <ul>
+          <li><a href="tel:+919334066155">9334066155</a></li>
+          <li><a href="tel:+919905649373">9905649373</a></li>
+          <li><a href="tel:+919973649930">9973649930</a></li>
+          <li><a href="tel:+919771341225">9771341225</a></li>
+        </ul>
+      </aside>
     </section>
 
-    <section class="card">
-      <div class="section-header">
-        <h2>Students</h2>
-        <button id="refresh-button" class="secondary">Refresh</button>
+    <section class="section" id="overview">
+      <div class="section-heading">
+        <p class="eyebrow">Project overview</p>
+        <h2>A production-ready hospital web presence</h2>
+        <p>The site helps patients and attendants discover services, call emergency numbers quickly, review specialists, and submit appointment requests with clear accessibility and SEO foundations.</p>
       </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Course</th>
-              <th>Age</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="students-table"></tbody>
-        </table>
+      <div class="feature-grid">
+        <article><h3>Purpose & goals</h3><p>Improve trust, reduce emergency contact friction, digitize appointment inquiries, and communicate facilities in a mobile-first experience.</p></article>
+        <article><h3>Target users</h3><p>Emergency patients, families, OPD visitors, referring doctors, ambulance coordinators, and local residents around Purnea.</p></article>
+        <article><h3>Core features</h3><p>Responsive pages, service directory, doctor profiles, appointment form, API-ready lead capture, user guide, and deployment notes.</p></article>
       </div>
+    </section>
+
+    <section class="section tinted" id="services">
+      <div class="section-heading"><p class="eyebrow">Facilities</p><h2>Neuro, cardio, critical care, and diagnostics</h2></div>
+      <div class="service-grid" id="service-grid"></div>
+    </section>
+
+    <section class="section" id="doctors">
+      <div class="section-heading"><p class="eyebrow">Medical team</p><h2>Specialists listed from hospital material</h2></div>
+      <div class="doctor-grid" id="doctor-grid"></div>
+    </section>
+
+    <section class="section split" id="appointments">
+      <div>
+        <p class="eyebrow">Appointment system</p>
+        <h2>Request OPD or admission support</h2>
+        <p>Submit a request and the hospital desk can follow up. The frontend validates required fields and sends JSON to the Spring Boot REST API.</p>
+        <div class="architecture-card">
+          <h3>System architecture</h3>
+          <p>Static responsive frontend → REST API <code>/api/appointments</code> → Spring service validation → MySQL <code>appointments</code> table with indexed phone, status, and requested date columns.</p>
+        </div>
+      </div>
+      <form class="appointment-form" id="appointment-form" novalidate>
+        <label>Patient name<input id="patientName" name="patientName" type="text" minlength="2" required placeholder="Enter patient name" /></label>
+        <label>Phone number<input id="phone" name="phone" type="tel" pattern="[0-9+\-\s]{10,15}" required placeholder="9334066155" /></label>
+        <label>Service needed<select id="service" name="service" required><option value="">Select service</option></select></label>
+        <label>Preferred date<input id="preferredDate" name="preferredDate" type="date" required /></label>
+        <label class="full">Symptoms / message<textarea id="messageText" name="message" rows="4" maxlength="500" placeholder="Briefly describe the concern"></textarea></label>
+        <button class="button primary full" type="submit">Submit request</button>
+        <p id="form-status" class="form-status" role="status"></p>
+      </form>
+    </section>
+
+    <section class="section tinted" id="documentation">
+      <div class="section-heading"><p class="eyebrow">Documentation</p><h2>Implementation notes</h2></div>
+      <div class="docs-grid">
+        <article><h3>UI/UX</h3><p>Mobile-first cards, high-contrast emergency CTA, sticky navigation, WCAG-friendly labels, generous tap targets, Inter typography, teal/red healthcare palette.</p></article>
+        <article><h3>Backend</h3><p>Spring Boot REST architecture with DTO-style validation through entity constraints, centralized error handling, CORS configuration, and MySQL persistence.</p></article>
+        <article><h3>Security</h3><p>Server-side validation, least-privilege DB credentials through environment variables, no secrets in frontend code, and clear extension points for authentication.</p></article>
+        <article><h3>AI roadmap</h3><p>Optional future triage chatbot, appointment prioritization, multilingual FAQs, and automated call-center summaries with human review for safety.</p></article>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div><p class="eyebrow">Visit us</p><h2>Near Kundipul, N.H.31, Line Bazar, Purnea, Bihar</h2><p>For emergencies, call first so the team can prepare ICU, OT, ambulance, or diagnostic support.</p></div>
+      <a class="button primary" href="https://www.google.com/maps/search/?api=1&query=Near+Kundipul+NH31+Line+Bazar+Purnea+Bihar" target="_blank" rel="noreferrer">Open map</a>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Kohinoor Emergency Neuro & Cardio Hospital. Director: Mr Salman Khurshid.</p>
+  </footer>
+
   <script src="app.js"></script>
 </body>
 </html>
