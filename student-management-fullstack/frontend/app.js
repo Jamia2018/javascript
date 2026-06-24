@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/appointments';
+const API_URL = window.KOHINOOR_API_URL || '/api/appointments';
 
 const services = [
   { icon: '🚑', title: '24/7 Emergency', text: 'Rapid response for urgent neuro, cardiac, trauma, and critical-care needs.' },

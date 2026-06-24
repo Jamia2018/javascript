@@ -106,3 +106,41 @@ Example appointment request:
 - Safe triage chatbot for FAQs and routing only, with emergency disclaimers.
 - Multilingual assistance for Hindi/Urdu/English.
 - Appointment prioritization and call-center summaries reviewed by hospital staff.
+
+## Deployment
+
+### One-command Docker deployment
+
+From `student-management-fullstack/`, run:
+
+```bash
+docker compose up --build -d
+```
+
+The stack starts:
+
+- Frontend website: `http://localhost:8081`
+- Backend API: `http://localhost:8080/api/appointments`
+- MySQL: `localhost:3306`
+
+The frontend container serves static assets through Nginx and proxies `/api/*` requests to the backend container, so production browser requests do not depend on `localhost:8080`.
+
+### Environment variables
+
+| Variable | Used by | Description |
+| --- | --- | --- |
+| `DB_URL` | Backend | JDBC URL for MySQL. |
+| `DB_USERNAME` | Backend | Database username. |
+| `DB_PASSWORD` | Backend | Database password. |
+| `FRONTEND_ORIGIN` | Backend | Allowed CORS origin, for example `https://kohinoor.example.com`. |
+| `KOHINOOR_API_URL` | Frontend runtime override | Optional browser global for a separate API host; defaults to `/api/appointments`. |
+
+### CI/CD pipeline
+
+`.github/workflows/deploy.yml` builds and publishes separate backend and frontend container images to GitHub Container Registry on pushes to `main` or manual workflow dispatch. Add environment-specific rollout steps for your host, for example SSH to a VPS and run `docker compose pull && docker compose up -d`, or deploy the images to AWS ECS, Azure Container Apps, Google Cloud Run, or a Kubernetes cluster.
+
+### Cloud options
+
+- **VPS / Lightsail / EC2:** install Docker, copy this folder, set production secrets, then run `docker compose up --build -d`.
+- **AWS ECS / Azure Container Apps / Google Cloud Run:** use the published GHCR images and managed MySQL.
+- **Vercel / Netlify frontend only:** deploy `frontend/` as static files and set `window.KOHINOOR_API_URL` before `app.js` or proxy `/api` to the backend.
