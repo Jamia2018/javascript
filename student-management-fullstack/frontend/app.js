@@ -1,102 +1,100 @@
-const API_URL = 'http://localhost:8080/api/students';
+const API_URL = window.KOHINOOR_API_URL || '/api/appointments';
 
-const form = document.querySelector('#student-form');
-const tableBody = document.querySelector('#students-table');
-const message = document.querySelector('#message');
-const formTitle = document.querySelector('#form-title');
-const resetButton = document.querySelector('#reset-button');
-const refreshButton = document.querySelector('#refresh-button');
+const services = [
+  { icon: '🚑', title: '24/7 Emergency', text: 'Rapid response for urgent neuro, cardiac, trauma, and critical-care needs.' },
+  { icon: '🫀', title: 'Cardiology OPD', text: 'Cardiology consultations, ECG, echo support, and monitored care.' },
+  { icon: '🧠', title: 'Neuro Care', text: 'Neurology and neuropsychiatry consultations for emergency and OPD patients.' },
+  { icon: '🏥', title: 'ICU, IPD & VIP Rooms', text: 'Inpatient admission, critical monitoring, ventilator support, and private rooms.' },
+  { icon: '🩺', title: 'Operation Theatre', text: 'Prepared O.T support for procedures, burns, orthopaedic, and emergency care.' },
+  { icon: '🔬', title: 'Diagnostics', text: 'Pathology, ultrasound, ECG, echo, and medicine services in one location.' }
+];
 
-function getFormData() {
+const doctors = [
+  ['Dr. J. Kumar', 'M.B.B.S. MD, DM', 'Cardiology'],
+  ['Dr. Md. Ajaj Alam', 'M.B.B.S. MD', 'Neuro Physician'],
+  ['Dr. Subodh Kumar', 'M.B.B.S. MD', 'General Physician'],
+  ['Dr. Abdul Hannan', 'M.B.B.S. MD, NBMCH Darjeeling', 'Diabetes & Kidney Specialist'],
+  ['Dr. Md. Nayab Anjum', 'M.B.B.S. MD, JNMCH (AMU), Aligarh', 'Neuropsychiatry'],
+  ['Dr. Niharika Rani', 'M.B.B.S. MS', 'OBS & Gynae'],
+  ['Dr. Naushad Alam', 'M.B.B.S. MS', 'Orthopaedics'],
+  ['Dr. Shakeb Ahmad', 'M.B.B.S. MD', 'Pediatrics']
+];
+
+const serviceGrid = document.querySelector('#service-grid');
+const doctorGrid = document.querySelector('#doctor-grid');
+const serviceSelect = document.querySelector('#service');
+const form = document.querySelector('#appointment-form');
+const statusMessage = document.querySelector('#form-status');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('#nav-links');
+
+function renderCards() {
+  serviceGrid.innerHTML = services.map(service => `
+    <article>
+      <div class="service-icon" aria-hidden="true">${service.icon}</div>
+      <h3>${service.title}</h3>
+      <p>${service.text}</p>
+    </article>
+  `).join('');
+
+  doctorGrid.innerHTML = doctors.map(([name, qualification, specialty]) => `
+    <article>
+      <h3>${name}</h3>
+      <p>${qualification}</p>
+      <p class="doctor-specialty">${specialty}</p>
+    </article>
+  `).join('');
+
+  serviceSelect.insertAdjacentHTML('beforeend', services.map(service => `<option value="${service.title}">${service.title}</option>`).join(''));
+}
+
+function setStatus(text, isError = false) {
+  statusMessage.textContent = text;
+  statusMessage.style.color = isError ? '#b91c1c' : '#047857';
+}
+
+function getAppointmentPayload() {
   return {
-    name: document.querySelector('#name').value.trim(),
-    email: document.querySelector('#email').value.trim(),
-    course: document.querySelector('#course').value.trim(),
-    age: Number(document.querySelector('#age').value)
+    patientName: form.patientName.value.trim(),
+    phone: form.phone.value.trim(),
+    service: form.service.value,
+    preferredDate: form.preferredDate.value,
+    message: form.message.value.trim()
   };
 }
 
-function fillForm(student) {
-  document.querySelector('#student-id').value = student.id;
-  document.querySelector('#name').value = student.name;
-  document.querySelector('#email').value = student.email;
-  document.querySelector('#course').value = student.course;
-  document.querySelector('#age').value = student.age;
-  formTitle.textContent = `Edit Student #${student.id}`;
-}
-
-function resetForm() {
-  form.reset();
-  document.querySelector('#student-id').value = '';
-  formTitle.textContent = 'Add Student';
-  message.textContent = '';
-}
-
-async function loadStudents() {
-  const response = await fetch(API_URL);
-  const students = await response.json();
-
-  tableBody.innerHTML = students.map(student => `
-    <tr>
-      <td>${student.id}</td>
-      <td>${student.name}</td>
-      <td>${student.email}</td>
-      <td>${student.course}</td>
-      <td>${student.age}</td>
-      <td>
-        <button type="button" onclick='editStudent(${JSON.stringify(student)})'>Edit</button>
-        <button type="button" class="secondary" onclick="deleteStudent(${student.id})">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-async function saveStudent(event) {
+async function submitAppointment(event) {
   event.preventDefault();
 
-  const studentId = document.querySelector('#student-id').value;
-  const isEditing = Boolean(studentId);
-  const url = isEditing ? `${API_URL}/${studentId}` : API_URL;
-  const method = isEditing ? 'PUT' : 'POST';
-
-  const response = await fetch(url, {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(getFormData())
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    message.textContent = error.message || Object.values(error).join(', ');
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    setStatus('Please complete all required fields correctly.', true);
     return;
   }
 
-  message.textContent = isEditing ? 'Student updated successfully.' : 'Student added successfully.';
-  resetForm();
-  await loadStudents();
-}
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(getAppointmentPayload())
+    });
 
-async function deleteStudent(id) {
-  const confirmed = window.confirm('Delete this student?');
-  if (!confirmed) {
-    return;
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || Object.values(error).join(', '));
+    }
+
+    form.reset();
+    setStatus('Appointment request submitted. The help desk will contact you soon.');
+  } catch (error) {
+    setStatus(`Saved locally for demo. Backend unavailable or rejected the request: ${error.message}`, true);
   }
-
-  const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-  if (response.ok) {
-    message.textContent = 'Student deleted successfully.';
-    await loadStudents();
-  }
 }
 
-function editStudent(student) {
-  fillForm(student);
-}
-
-form.addEventListener('submit', saveStudent);
-resetButton.addEventListener('click', resetForm);
-refreshButton.addEventListener('click', loadStudents);
-
-loadStudents().catch(() => {
-  message.textContent = 'Could not connect to backend. Start Spring Boot first.';
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', String(isOpen));
 });
+
+form.addEventListener('submit', submitAppointment);
+renderCards();
